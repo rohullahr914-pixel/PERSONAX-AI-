@@ -1,0 +1,78 @@
+@import "tailwindcss";
+
+:root {
+  --background: #020817;
+  --foreground: #e2e8f0;
+  --surface: rgba(15, 23, 42, 0.86);
+  --border: rgba(148, 163, 184, 0.15);
+  --cyan: #22d3ee;
+  --blue: #3b82f6;
+  --violet: #a855f7;
+  --card-shadow: 0 0 30px rgba(34, 211, 238, 0.12);
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  margin: 0;
+  min-height: 100vh;
+  background:
+    radial-gradient(circle at top, rgba(34, 211, 238, 0.12), transparent 20%),
+    radial-gradient(circle at bottom right, rgba(168, 85, 247, 0.12), transparent 25%),
+    var(--background);
+  color: var(--foreground);
+  font-family: "Avenir Next", Avenir, "Segoe UI", sans-serif;
+  letter-spacing: 0;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+img {
+  max-width: 100%;
+  display: block;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+button,
+input,
+textarea,
+select {
+  font: inherit;
+}
+
+button,
+a {
+  -webkit-tap-highlight-color: transparent;
+}
+
+:focus-visible {
+  outline: 2px solid var(--cyan);
+  outline-offset: 3px;
+}
+
+input::placeholder,
+textarea::placeholder {
+  opacity: 0.7;
+}
+
+::selection {
+  background: rgba(34, 211, 238, 0.3);
+}
+
+@layer utilities {
+  .bg-grid-fade {
+    background-image:
+      linear-gradient(rgba(255, 255, 255, 0.02) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(255, 255, 255, 0.02) 1px, transparent 1px);
+    background-size: 18px 18px;
+  }
+}
+
