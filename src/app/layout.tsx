@@ -42,6 +42,15 @@ export const metadata: Metadata = {
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="en">
+      <head>
+        <script async src="https://www.googletagmanager.com/gtag/js?id=G-HET04ZMJ52"></script>
+        <script>
+          window.dataLayer = window.dataLayer || [];
+          function gtag(){dataLayer.push(arguments);}
+          gtag('js', new Date());
+          gtag('config', 'G-HET04ZMJ52');
+        </script>
+      </head>
       <body>
         <div className="min-h-screen bg-[#020817] text-white">
           <div className="mx-auto max-w-[1500px] px-3 pb-8 pt-3 sm:px-6 sm:pt-5 lg:px-8">
