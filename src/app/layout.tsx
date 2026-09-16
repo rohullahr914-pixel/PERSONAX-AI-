@@ -15,7 +15,7 @@ const navItems = [
 export const metadata: Metadata = {
   metadataBase: new URL("https://personax-ai.netlify.app"),
   verification: {
-    google: "yOznmatk_J1Fh67Jsl_7eqlg32vbtS5js2DYcZcZ5-Q",
+    google: "m072IYaONLrTLhf_hDzVPRCm_3zwQeHBLnj6l9aRWLw",
   },
   title: {
     default: "PersonaX AI — One AI. A Thousand Minds.",
