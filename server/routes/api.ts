@@ -1,0 +1,18 @@
+import { Router } from "express";
+import * as controller from "../controllers/api";
+import { asyncHandler } from "../utils/http";
+
+export const apiRouter = Router();
+apiRouter.get("/personas", asyncHandler(controller.personas));
+apiRouter.get("/personas/:id", asyncHandler(controller.persona));
+apiRouter.get("/categories", asyncHandler(controller.categories));
+apiRouter.get("/users/:id", asyncHandler(controller.user));
+apiRouter.get("/users/:id/profile", asyncHandler(controller.profile));
+apiRouter.get("/conversations/:userId", asyncHandler(controller.conversations));
+apiRouter.get("/memories/:userId", asyncHandler(controller.memories));
+apiRouter.get("/favorites/:userId", asyncHandler(controller.favorites));
+apiRouter.post("/conversations", asyncHandler(controller.createConversation));
+apiRouter.post("/messages", asyncHandler(controller.createMessage));
+apiRouter.post("/memories", asyncHandler(controller.createMemory));
+apiRouter.post("/favorites", asyncHandler(controller.createFavorite));
+apiRouter.delete("/favorites/:id", asyncHandler(controller.deleteFavorite));

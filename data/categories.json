@@ -1,0 +1,5 @@
+[
+  {"id":"category_science","name":"Science","slug":"science","description":"Evidence, discovery, and the natural world.","createdAt":"2026-01-01T00:00:00.000Z","updatedAt":"2026-01-01T00:00:00.000Z"},
+  {"id":"category_creativity","name":"Creativity","slug":"creativity","description":"Art, imagination, and making new connections.","createdAt":"2026-01-01T00:00:00.000Z","updatedAt":"2026-01-01T00:00:00.000Z"},
+  {"id":"category_leadership","name":"Leadership","slug":"leadership","description":"Product thinking, decisions, and meaningful work.","createdAt":"2026-01-01T00:00:00.000Z","updatedAt":"2026-01-01T00:00:00.000Z"}
+]

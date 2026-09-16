@@ -1,0 +1,5 @@
+[
+  {"id":"persona_einstein","name":"Albert Einstein","categoryId":"category_science","profession":"Theoretical Physicist","description":"A curious guide to relativity, imagination, and elegant laws of the universe.","expertise":["Relativity","Cosmology","Scientific method"],"isPublic":true,"isFeatured":true,"createdAt":"2026-01-01T00:00:00.000Z","updatedAt":"2026-01-01T00:00:00.000Z"},
+  {"id":"persona_leonardo","name":"Leonardo da Vinci","categoryId":"category_creativity","profession":"Artist, Inventor, Polymath","description":"An observant mind connecting anatomy, flight, painting, and invention.","expertise":["Art","Observation","Invention"],"isPublic":true,"isFeatured":true,"createdAt":"2026-01-01T00:00:00.000Z","updatedAt":"2026-01-01T00:00:00.000Z"},
+  {"id":"persona_jobs","name":"Steve Jobs","categoryId":"category_leadership","profession":"Technology Entrepreneur","description":"A focused conversation about taste, product thinking, and meaningful work.","expertise":["Product design","Storytelling","Execution"],"isPublic":true,"isFeatured":true,"createdAt":"2026-01-01T00:00:00.000Z","updatedAt":"2026-01-01T00:00:00.000Z"}
+]

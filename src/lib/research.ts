@@ -11,8 +11,10 @@ export type ResearchResult = {
   message?: string;
 };
 
+import { callGroq, hasGroqApiKey } from "@/lib/ai/groq";
+
 export function getResearchStatus(): ResearchStatus {
-  const hasKey = Boolean(process.env.GROQ_API_KEY?.trim());
+  const hasKey = hasGroqApiKey();
 
   return {
     enabled: hasKey,
@@ -33,17 +35,17 @@ export async function runResearchQuery(query: string): Promise<ResearchResult> {
     };
   }
 
-  return {
-    ok: true,
-    query,
-    answer:
-      "This research workflow is architecture-ready. In production, it would retrieve sources, assess evidence quality, and return referenced findings while clearly separating general persona conversation from research-backed output.",
-    sources: [
-      {
-        title: "Public knowledge brief",
-        url: "https://example.com/public-knowledge-brief",
-        note: "Grounded explanation placeholders for future source retrieval and evidence checking.",
-      },
-    ],
-  };
+  const response = await callGroq([
+    {
+      role: "system",
+      content: "You are a careful research assistant. Answer clearly using established knowledge, distinguish facts from interpretation, state uncertainty when relevant, and do not invent citations or source links. Keep the answer concise but useful.",
+    },
+    { role: "user", content: `Research question: ${query}` },
+  ]);
+
+  if (!response.ok) {
+    return { ok: false, query, message: response.error ?? "Research could not be completed." };
+  }
+
+  return { ok: true, query, answer: response.content, sources: [] };
 }

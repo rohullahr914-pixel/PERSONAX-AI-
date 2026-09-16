@@ -16,6 +16,7 @@ export const personaCategories = [
   "Engineering",
   "Artificial Intelligence",
   "Mathematics",
+  "Film",
   "Philosophy",
   "Literature",
   "Writing",

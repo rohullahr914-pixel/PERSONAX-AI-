@@ -12,7 +12,12 @@ import { personas } from "@/lib/personas";
 export default function FavoritesPage() {
   const user = useSyncExternalStore(subscribeToAuth, getCurrentUser, () => null);
   const profileSnapshot = useSyncExternalStore(subscribeToProfile, getProfilePreferencesSnapshot, () => "");
-  const profileStore = profileSnapshot ? JSON.parse(profileSnapshot) as Record<string, { favoritePersonaSlug?: string }> : {};
+  let profileStore: Record<string, { favoritePersonaSlug?: string }> = {};
+  try {
+    profileStore = profileSnapshot ? JSON.parse(profileSnapshot) as Record<string, { favoritePersonaSlug?: string }> : {};
+  } catch {
+    profileStore = {};
+  }
   const favoriteSlug = user ? profileStore[user.id]?.favoritePersonaSlug ?? "" : "";
 
   const toggleFavorite = (slug: string) => {

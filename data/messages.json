@@ -1,0 +1,4 @@
+[
+  {"id":"message_demo_001","conversationId":"conversation_demo_001","personaId":"persona_einstein","role":"user","content":"What makes a good scientific question?","createdAt":"2026-02-02T09:00:00.000Z"},
+  {"id":"message_demo_002","conversationId":"conversation_demo_001","personaId":"persona_einstein","role":"assistant","content":"A good question is precise enough to investigate and open enough to reveal something unexpected.","createdAt":"2026-02-02T09:05:00.000Z"}
+]

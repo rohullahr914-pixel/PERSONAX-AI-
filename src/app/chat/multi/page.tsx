@@ -1,8 +1,8 @@
 "use client";
 
-import { Check, Send, Sparkles, Users, Zap } from "lucide-react";
+import { BrainCircuit, Check, Lightbulb, Search, Send, Sparkles, Swords, Users, Zap } from "lucide-react";
 import { useMemo, useState, useSyncExternalStore } from "react";
-import { getFeaturedPersonas } from "@/lib/personas";
+import { getPersonas } from "@/lib/personas";
 import { PersonaAvatar } from "@/components/persona-avatar";
 import { BackButton } from "@/components/back-button";
 import { getCurrentUser, subscribeToAuth } from "@/lib/auth";
@@ -17,7 +17,11 @@ type MultiMessage = {
 };
 
 const sessionPersonaSet = ["albert-einstein", "leonardo-da-vinci", "steve-jobs"];
-const discussionModes = ["Debate", "Brainstorm", "Mentor"] as const;
+const discussionModes = [
+  { value: "Debate", label: "Debate", description: "Challenge assumptions", icon: Swords },
+  { value: "Brainstorm", label: "Brainstorm", description: "Generate bold ideas", icon: Lightbulb },
+  { value: "Mentor", label: "Mentor", description: "Find practical direction", icon: BrainCircuit },
+] as const;
 
 function splitPersonaResponses(content: string, participants: Array<{ name: string; slug: string }>) {
   const markers = participants.map((persona) => `[PERSONA: ${persona.name}]`);
@@ -36,7 +40,16 @@ function splitPersonaResponses(content: string, participants: Array<{ name: stri
 }
 
 export default function MultiPersonaChatPage() {
-  const allPersonas = getFeaturedPersonas();
+  const allPersonas = getPersonas();
+  const [personaQuery, setPersonaQuery] = useState("");
+  const availablePersonas = useMemo(
+    () => {
+      const query = personaQuery.trim().toLowerCase();
+      if (!query) return allPersonas;
+      return allPersonas.filter((persona) => [persona.name, persona.profession, persona.category, ...persona.expertise, ...persona.tags].join(" ").toLowerCase().includes(query));
+    },
+    [allPersonas, personaQuery],
+  );
   const initial = useMemo(
     () => allPersonas.filter((persona) => sessionPersonaSet.includes(persona.slug)).slice(0, 3),
     [allPersonas],
@@ -44,7 +57,7 @@ export default function MultiPersonaChatPage() {
 
   const [selected, setSelected] = useState(initial);
   const [input, setInput] = useState("How should we combine scientific imagination with product design?");
-    const [mode, setMode] = useState<(typeof discussionModes)[number]>("Debate");
+  const [mode, setMode] = useState<(typeof discussionModes)[number]["value"]>("Debate");
   const [messages, setMessages] = useState<MultiMessage[]>([
     {
       id: "intro-a",
@@ -70,17 +83,24 @@ export default function MultiPersonaChatPage() {
     setSelected((current) => {
       const exists = current.some((item) => item.id === persona.id);
       if (exists) {
-        if (current.length === 1) return current;
+        if (current.length === 2) return current;
+        setError("");
         return current.filter((item) => item.id !== persona.id);
       }
 
+      if (current.length === 4) {
+        setError("A focused room can include up to four personas.");
+        return current;
+      }
+
+      setError("");
       return [...current, persona];
     });
   };
 
   const handleSubmit = async () => {
     const trimmed = input.trim();
-    if (!trimmed || isLoading || selected.length === 0) return;
+    if (!trimmed || isLoading || selected.length < 2) return;
 
     const userMessage: MultiMessage = {
       id: crypto.randomUUID(),
@@ -135,40 +155,56 @@ export default function MultiPersonaChatPage() {
   };
 
   return (
-    <main className="mx-auto max-w-6xl px-4 py-12 text-white sm:px-6 lg:px-8">
-      <div className="rounded-[32px] border border-cyan-400/15 bg-slate-950/75 p-6 shadow-[0_0_35px_rgba(34,211,238,0.09)] backdrop-blur-xl sm:p-8">
-        <div className="mb-5 flex items-center justify-between">
+    <main className="mx-auto max-w-7xl px-1 py-4 text-white sm:px-2 sm:py-8">
+      <section className="relative overflow-hidden rounded-[28px] border border-cyan-300/15 bg-[#050d1e] p-4 shadow-[0_24px_80px_rgba(2,8,23,0.48)] sm:rounded-[36px] sm:p-8 lg:p-10">
+        <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_80%_0%,rgba(34,211,238,0.10),transparent_26%),radial-gradient(circle_at_15%_80%,rgba(99,102,241,0.08),transparent_28%)]" />
+        <div className="relative">
+        <div className="mb-7 flex items-center justify-between">
           <BackButton href="/discover" label="Back" />
-            <span className="inline-flex items-center gap-2 text-[10px] uppercase tracking-[0.2em] text-cyan-200"><Zap className="h-3.5 w-3.5" /> Perspective studio</span>
+          <span className="inline-flex items-center gap-2 text-[10px] font-semibold uppercase tracking-[0.2em] text-cyan-200"><Zap className="h-3.5 w-3.5" /> Perspective studio</span>
         </div>
-        <div className="mb-6 flex items-center justify-between rounded-2xl border border-white/10 bg-white/3 px-4 py-3">
-          <div className="flex items-center gap-3">
-            <div className="flex h-10 w-10 items-center justify-center overflow-hidden rounded-full border border-cyan-300/30 bg-cyan-500/10 text-sm font-bold text-cyan-100">{userAvatar ? <img src={userAvatar} alt={user?.name ?? "User"} className="h-full w-full object-cover" /> : user?.name?.slice(0, 2).toUpperCase() ?? "GU"}</div>
-            <div><p className="text-[10px] uppercase tracking-[0.2em] text-cyan-300">Speaking as</p><p className="text-sm font-semibold text-white">{user?.name ?? "Guest"}</p></div>
-          </div>
-          {!user && <a href="/login" className="text-xs font-medium text-cyan-300">Log in to personalize</a>}
-        </div>
-        <div className="flex flex-col gap-3 md:flex-row md:items-end md:justify-between">
+
+        <div className="grid gap-6 border-b border-white/8 pb-8 lg:grid-cols-[1fr_auto] lg:items-end">
           <div>
-            <p className="text-sm uppercase tracking-[0.25em] text-cyan-300">Multi-persona discussion</p>
-            <h1 className="mt-3 max-w-3xl text-4xl font-black tracking-[-0.07em] text-white">
-              {selected.map((p) => p.name).join(" + ") || "Choose a mind"}
-            </h1>
-            <p className="mt-3 max-w-2xl text-sm leading-6 text-slate-300">Ask one question and get distinct answers from every selected perspective. Each voice stays separate in the thread.</p>
+            <p className="text-xs font-semibold uppercase tracking-[0.24em] text-cyan-300">Multi-persona discussion</p>
+            <h1 className="mt-3 max-w-3xl text-4xl font-black leading-[0.98] tracking-[-0.06em] text-white sm:text-6xl">Build your perspective room.</h1>
+            <p className="mt-4 max-w-2xl text-sm leading-7 text-slate-300 sm:text-base">Bring distinct minds into one focused conversation. Compare their reasoning, uncover tensions, and leave with a clearer direction.</p>
           </div>
-          <div className="inline-flex items-center gap-2 rounded-full border border-cyan-400/30 bg-cyan-500/10 px-3 py-2 text-[10px] uppercase tracking-[0.2em] text-cyan-200">
-            <Users className="h-4 w-4" /> {selected.length} active
+          <div className="flex items-center gap-4 rounded-2xl border border-white/10 bg-white/[0.035] px-4 py-3">
+            <div className="flex -space-x-2">
+              {selected.map((persona) => <PersonaAvatar key={persona.id} slug={persona.slug} name={persona.name} className="h-9 w-9 border-2 border-[#071020]" />)}
+            </div>
+            <div><p className="text-[10px] uppercase tracking-[0.18em] text-slate-500">Room status</p><p className="mt-0.5 text-sm font-semibold text-white">{selected.length} minds · {mode}</p></div>
           </div>
         </div>
 
-        <div className="mt-5 flex flex-col gap-3 rounded-2xl border border-white/10 bg-white/3 p-4 sm:flex-row sm:items-center sm:justify-between">
-          <p className="text-sm text-slate-300">Choose the shape of the discussion.</p>
-          <div className="flex flex-wrap gap-2" role="group" aria-label="Discussion mode">
-            {discussionModes.map((option) => <button key={option} type="button" onClick={() => setMode(option)} className={`rounded-full border px-3 py-1.5 text-xs transition ${mode === option ? "border-cyan-400/60 bg-cyan-500/15 text-cyan-100" : "border-white/10 bg-slate-900/70 text-slate-400 hover:border-cyan-400/40"}`}>{option}</button>)}
+        <div className="mt-8 grid gap-8 lg:grid-cols-[0.82fr_1.18fr]">
+          <div>
+            <div className="flex items-end justify-between gap-3"><div><p className="text-xs font-semibold uppercase tracking-[0.2em] text-cyan-300">01 · Discussion mode</p><h2 className="mt-2 text-2xl font-bold tracking-[-0.04em] text-white">Choose the energy</h2></div><span className="text-xs text-slate-500">One mode</span></div>
+            <div className="mt-4 grid gap-2" role="group" aria-label="Discussion mode">
+              {discussionModes.map((option) => {
+                const Icon = option.icon;
+                const active = mode === option.value;
+                return <button key={option.value} type="button" onClick={() => setMode(option.value)} aria-pressed={active} className={`flex min-h-16 items-center gap-3 rounded-2xl border px-4 text-left transition duration-200 ${active ? "border-cyan-300/35 bg-cyan-400/10 shadow-[0_12px_30px_rgba(2,8,23,0.25)]" : "border-white/8 bg-white/[0.025] hover:border-white/15 hover:bg-white/5"}`}><span className={`flex h-10 w-10 items-center justify-center rounded-xl ${active ? "bg-cyan-400 text-slate-950" : "bg-white/5 text-slate-400"}`}><Icon className="h-5 w-5" /></span><span><span className="block text-sm font-bold text-white">{option.label}</span><span className="mt-0.5 block text-xs text-slate-400">{option.description}</span></span>{active && <Check className="ml-auto h-4 w-4 text-cyan-300" />}</button>;
+              })}
+            </div>
+
+            <div className="mt-5 flex items-center justify-between rounded-2xl border border-white/8 bg-white/[0.025] p-3">
+              <div className="flex items-center gap-3"><div className="flex h-10 w-10 items-center justify-center overflow-hidden rounded-xl border border-cyan-300/20 bg-cyan-400/8 text-xs font-bold text-cyan-100">{userAvatar ? <img src={userAvatar} alt={user?.name ?? "User"} className="h-full w-full object-cover" /> : user?.name?.slice(0, 2).toUpperCase() ?? "GU"}</div><div><p className="text-[10px] uppercase tracking-[0.16em] text-slate-500">Speaking as</p><p className="text-sm font-semibold text-white">{user?.name ?? "Guest"}</p></div></div>
+              {!user && <a href="/login" className="text-xs font-semibold text-cyan-300">Personalize</a>}
+            </div>
           </div>
-        </div>
-        <div className="mt-8 grid gap-4 md:grid-cols-3">
-          {allPersonas.slice(0, 6).map((persona) => {
+
+          <div>
+            <div className="flex items-end justify-between gap-3"><div><p className="text-xs font-semibold uppercase tracking-[0.2em] text-cyan-300">02 · Your panel</p><h2 className="mt-2 text-2xl font-bold tracking-[-0.04em] text-white">Select 2–4 minds</h2></div><span className="text-xs text-slate-500">{selected.length}/4 selected · {allPersonas.length} available</span></div>
+            <label className="mt-4 flex min-h-12 items-center gap-3 rounded-2xl border border-white/10 bg-white/[0.025] px-4 transition focus-within:border-cyan-300/30 focus-within:bg-white/5">
+              <Search className="h-4 w-4 shrink-0 text-slate-500" aria-hidden="true" />
+              <span className="sr-only">Search personas</span>
+              <input value={personaQuery} onChange={(event) => setPersonaQuery(event.target.value)} placeholder="Search name, category, or expertise" className="min-w-0 flex-1 bg-transparent text-sm text-white placeholder:text-slate-500 focus:outline-none" />
+              {personaQuery && <button type="button" onClick={() => setPersonaQuery("")} className="text-xs font-semibold text-cyan-300">Clear</button>}
+            </label>
+            <div className="mt-4 grid gap-3 sm:grid-cols-2">
+          {availablePersonas.map((persona) => {
             const active = selected.some((item) => item.id === persona.id);
 
             return (
@@ -177,10 +213,10 @@ export default function MultiPersonaChatPage() {
                 type="button"
                 onClick={() => togglePersona(persona)}
                 aria-pressed={active}
-                className={`rounded-[24px] border p-4 text-left transition ${
+                className={`group rounded-[20px] border p-4 text-left transition duration-200 ${
                   active
-                    ? "border-cyan-400/60 bg-cyan-500/10 shadow-[0_0_25px_rgba(34,211,238,0.12)]"
-                    : "border-white/10 bg-white/3 hover:border-cyan-400/40 hover:bg-slate-900/70"
+                    ? "border-cyan-300/35 bg-cyan-400/10 shadow-[0_14px_35px_rgba(2,8,23,0.28)]"
+                    : "border-white/8 bg-white/[0.025] hover:-translate-y-0.5 hover:border-white/15 hover:bg-white/5"
                 }`}
               >
                 <div className="flex items-center gap-3">
@@ -191,22 +227,26 @@ export default function MultiPersonaChatPage() {
                   </div>
                   <span className={`ml-auto flex h-6 w-6 items-center justify-center rounded-full border ${active ? "border-cyan-300 bg-cyan-300 text-slate-950" : "border-white/10 text-transparent"}`}><Check className="h-3.5 w-3.5" /></span>
                 </div>
-                <p className="mt-3 text-sm leading-6 text-slate-300">{persona.shortDescription}</p>
+                <p className="mt-3 line-clamp-2 text-xs leading-5 text-slate-400">{persona.shortDescription}</p>
               </button>
             );
           })}
+              {availablePersonas.length === 0 && <div className="col-span-full rounded-2xl border border-dashed border-white/10 px-5 py-10 text-center text-sm text-slate-400">No personas match your search.</div>}
+            </div>
+          </div>
         </div>
 
-        <div className="mt-8 rounded-[24px] border border-white/10 bg-[radial-gradient(circle_at_top,_rgba(34,211,238,0.08),_transparent_30%),rgba(15,23,42,0.9)] p-5 shadow-[0_0_24px_rgba(15,23,42,0.8)]">
-          <div className="mb-4 flex items-center gap-2 text-sm uppercase tracking-[0.25em] text-cyan-300">
-            <Sparkles className="h-4 w-4" /> Current discussion
+        <div className="mt-10 rounded-[26px] border border-white/10 bg-slate-950/55 p-4 shadow-[0_18px_55px_rgba(2,8,23,0.35)] sm:p-6">
+          <div className="mb-6 flex flex-col gap-3 border-b border-white/8 pb-5 sm:flex-row sm:items-center sm:justify-between">
+            <div><div className="flex items-center gap-2 text-xs font-semibold uppercase tracking-[0.2em] text-cyan-300"><Sparkles className="h-4 w-4" /> 03 · Live discussion</div><p className="mt-2 text-sm text-slate-400">{selected.map((persona) => persona.name).join(" · ")}</p></div>
+            <span className="inline-flex w-fit items-center gap-2 rounded-full border border-cyan-300/20 bg-cyan-400/8 px-3 py-2 text-[10px] font-semibold uppercase tracking-[0.16em] text-cyan-200"><Users className="h-3.5 w-3.5" />{selected.length} active minds</span>
           </div>
 
-          <div className="space-y-3">
+          <div className="max-h-[620px] space-y-4 overflow-y-auto pr-1">
             {messages.map((message) => (
               <div
                 key={message.id}
-                className={`max-w-[90%] rounded-2xl border p-4 leading-7 ${
+                className={`max-w-[92%] rounded-2xl border p-4 text-sm leading-7 sm:max-w-[82%] ${
                   message.tone === "user"
                     ? "ml-auto rounded-br-md border-violet-400/20 bg-violet-500/15 text-slate-100"
                     : "rounded-bl-md border-cyan-400/20 bg-slate-900/80 text-slate-200 shadow-[0_0_18px_rgba(34,211,238,0.06)]"
@@ -236,30 +276,33 @@ export default function MultiPersonaChatPage() {
             </div>
           )}
 
-          <div className="mt-5 flex flex-col gap-2 rounded-[22px] border border-white/10 bg-slate-900/75 p-2 sm:flex-row">
-            <input
+          <div className="mt-6 rounded-[22px] border border-white/10 bg-slate-900/80 p-2 focus-within:border-cyan-300/25">
+            <textarea
               aria-label="Multi persona prompt"
               value={input}
               onChange={(event) => setInput(event.target.value)}
               onKeyDown={(event) => {
-                if (event.key === "Enter") {
+                if (event.key === "Enter" && !event.shiftKey) {
+                  event.preventDefault();
                   handleSubmit();
                 }
               }}
               placeholder="Ask the group a question..."
-              className="min-w-0 flex-1 rounded-full border border-white/5 bg-transparent px-4 py-3 text-sm text-white placeholder:text-slate-400 focus:outline-none"
+              rows={3}
+              className="min-h-20 w-full resize-none bg-transparent px-3 py-3 text-sm leading-6 text-white placeholder:text-slate-500 focus:outline-none"
             />
-            <button
+            <div className="flex items-center justify-between gap-3 border-t border-white/8 px-2 pt-2"><span className="text-[11px] text-slate-500">Enter to send · Shift + Enter for a new line</span><button
               type="button"
               onClick={handleSubmit}
-              disabled={isLoading || selected.length === 0}
-              className="inline-flex items-center justify-center gap-2 rounded-full bg-gradient-to-r from-cyan-500 to-blue-600 px-5 py-3 text-sm font-semibold text-white shadow-[0_0_20px_rgba(34,211,238,0.28)] disabled:cursor-not-allowed disabled:opacity-60"
+              disabled={isLoading || selected.length < 2 || !input.trim()}
+              className="inline-flex min-h-11 items-center justify-center gap-2 rounded-full bg-gradient-to-r from-cyan-500 to-blue-600 px-5 text-sm font-semibold text-white shadow-[0_10px_24px_rgba(14,165,233,0.22)] transition hover:brightness-110 disabled:cursor-not-allowed disabled:opacity-45"
             >
               <Send className="h-4 w-4" /> Send
-            </button>
+            </button></div>
           </div>
         </div>
-      </div>
+        </div>
+      </section>
     </main>
   );
 }

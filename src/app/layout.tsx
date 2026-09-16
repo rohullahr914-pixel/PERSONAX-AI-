@@ -39,30 +39,30 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
     <html lang="en">
       <body>
         <div className="min-h-screen bg-[#020817] text-white">
-          <div className="mx-auto max-w-[1500px] px-4 pb-8 pt-6 sm:px-6 lg:px-8">
-            <header className="relative mb-8 rounded-[30px] border border-cyan-400/20 bg-slate-950/80 px-5 py-4 shadow-[0_0_35px_rgba(34,211,238,0.08)] backdrop-blur-xl sm:px-8">
-              <div className="flex flex-col gap-4 lg:flex-row lg:items-center lg:justify-between">
-                <Link href="/" className="flex items-center gap-4">
-                  <img src="/brand/personax-logo.png" alt="PersonaX AI" className="h-12 w-12 rounded-full object-cover shadow-[0_0_24px_rgba(34,211,238,0.3)]" />
+          <div className="mx-auto max-w-[1500px] px-3 pb-8 pt-3 sm:px-6 sm:pt-5 lg:px-8">
+            <header className="sticky top-3 z-50 mb-6 rounded-[24px] border border-cyan-300/20 bg-slate-950/88 px-3 py-3 shadow-[0_12px_45px_rgba(2,8,23,0.48)] backdrop-blur-2xl sm:top-5 sm:mb-8 sm:rounded-[28px] sm:px-5 lg:px-7">
+              <div className="flex items-center justify-between gap-3">
+                <Link href="/" className="flex min-w-0 items-center gap-3 rounded-2xl focus-visible:outline-offset-4 sm:gap-4">
+                  <img src="/brand/personax-logo.png" alt="PersonaX AI" className="h-11 w-11 shrink-0 rounded-2xl object-cover shadow-[0_0_24px_rgba(34,211,238,0.25)] sm:h-12 sm:w-12" />
                   <div>
-                    <div className="text-xl font-black tracking-[-0.08em] text-white">
+                    <div className="text-lg font-black tracking-[-0.07em] text-white sm:text-xl">
                       PERSONA<span className="text-cyan-400">X</span>
                     </div>
-                    <div className="text-[9px] uppercase tracking-[0.28em] text-cyan-200/70">AI</div>
+                    <div className="hidden text-[9px] uppercase tracking-[0.22em] text-cyan-200/70 min-[390px]:block">One AI · A thousand minds</div>
                   </div>
                 </Link>
 
-                <nav className="hidden items-center gap-6 text-sm text-slate-200 md:flex">
+                <nav className="hidden items-center gap-1 rounded-full border border-white/8 bg-white/[0.025] p-1 text-sm text-slate-300 lg:flex">
                   {navItems.map((item) => (
-                    <Link key={item.href} href={item.href} className="relative py-2 transition hover:text-cyan-300">
+                    <Link key={item.href} href={item.href} className="rounded-full px-4 py-2.5 transition hover:bg-white/5 hover:text-white">
                       {item.label}
                     </Link>
                   ))}
                 </nav>
 
-                <div className="flex items-center gap-3">
+                <div className="flex shrink-0 items-center gap-2">
                   <MobileNav items={navItems} />
-                  <AuthActions />
+                  <div className="hidden items-center gap-2 lg:flex"><AuthActions /></div>
                 </div>
               </div>
             </header>

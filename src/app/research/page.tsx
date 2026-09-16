@@ -5,7 +5,7 @@ import { Search, Sparkles } from "lucide-react";
 import { BackButton } from "@/components/back-button";
 
 type ResearchSource = { title: string; url: string; note: string };
-type ResearchResult = { ok?: boolean; query?: string; answer?: string; message?: string; sources?: ResearchSource[] };
+type ResearchResult = { ok?: boolean; query?: string; answer?: string; message?: string; error?: string; sources?: ResearchSource[] };
 
 export default function ResearchPage() {
   const [query, setQuery] = useState("How do AI personas combine identity, memory, and prompt design?");
@@ -26,7 +26,7 @@ export default function ResearchPage() {
         body: JSON.stringify({ query }),
       });
       const data = (await response.json()) as ResearchResult;
-      if (!response.ok) throw new Error(data.message ?? "Research could not be completed.");
+      if (!response.ok) throw new Error(data.message ?? data.error ?? "Research could not be completed.");
       setResult(data);
     } catch (caughtError) {
       setError(caughtError instanceof Error ? caughtError.message : "Research could not be completed.");

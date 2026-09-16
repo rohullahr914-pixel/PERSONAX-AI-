@@ -1,0 +1,11 @@
+[
+  {
+    "id": "memory_demo_001",
+    "userId": "user_demo_001",
+    "type": "preference",
+    "summary": "Prefers concise explanations with practical examples.",
+    "source": "profile",
+    "createdAt": "2026-02-01T12:00:00.000Z",
+    "updatedAt": "2026-02-01T12:00:00.000Z"
+  }
+]

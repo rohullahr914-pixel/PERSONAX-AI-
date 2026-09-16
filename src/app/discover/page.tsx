@@ -17,6 +17,10 @@ const categoryFilters = [
   "Leadership",
   "Engineering",
   "Business",
+  "Sports",
+  "History",
+  "Music",
+  "Film",
 ];
 
 export default function DiscoverPage() {

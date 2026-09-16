@@ -1,9 +1,10 @@
 import Link from "next/link";
-import { ArrowRight, Heart, Share2, Sparkles } from "lucide-react";
+import { ArrowRight, Sparkles } from "lucide-react";
 import { notFound } from "next/navigation";
 import { getPersona, getPersonas, getPersonaBySlug } from "@/lib/personas";
 import { BackButton } from "@/components/back-button";
 import { PersonaAvatar } from "@/components/persona-avatar";
+import { PersonaActions } from "@/components/persona-actions";
 
 export function generateStaticParams() {
   return getPersona("albert-einstein") ? getPersonas().map((persona) => ({ slug: persona.slug })) : [];
@@ -43,12 +44,7 @@ async function PersonaProfileContent({ params }: { params: Promise<{ slug: strin
             </div>
 
             <div className="flex flex-wrap gap-3">
-              <button className="inline-flex items-center gap-2 rounded-full border border-white/10 bg-white/3 px-4 py-2 text-sm text-slate-200">
-                <Heart className="h-4 w-4" /> Favorite
-              </button>
-              <button className="inline-flex items-center gap-2 rounded-full border border-white/10 bg-white/3 px-4 py-2 text-sm text-slate-200">
-                <Share2 className="h-4 w-4" /> Share
-              </button>
+              <PersonaActions slug={persona.slug} name={persona.name} />
               <Link href={`/chat/${persona.slug}`} className="inline-flex items-center gap-2 rounded-full bg-gradient-to-r from-cyan-500 to-blue-600 px-5 py-2.5 text-sm font-semibold text-white">
                 Start Chat <ArrowRight className="h-4 w-4" />
               </Link>

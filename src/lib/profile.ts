@@ -20,6 +20,18 @@ export function getProfilePreferencesSnapshot() {
 type ProfilePreferences = {
   avatarDataUrl?: string;
   favoritePersonaSlug?: string;
+  displayName?: string;
+  bio?: string;
+  profileVisibility?: "Public" | "Private";
+  quote?: string;
+  quoteVisibility?: "Public" | "Private";
+  pinnedConversations?: Array<{
+    id: string;
+    title: string;
+    personaName: string;
+    preview: string;
+    date: string;
+  }>;
 };
 
 type ProfilePreferencesStore = Record<string, ProfilePreferences>;
