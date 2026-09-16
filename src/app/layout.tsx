@@ -13,7 +13,10 @@ const navItems = [
 ];
 
 export const metadata: Metadata = {
-  metadataBase: new URL("https://personax-ai.example"),
+  metadataBase: new URL("https://personax-ai.netlify.app"),
+  verification: {
+    google: "yOznmatk_J1Fh67Jsl_7eqlg32vbtS5js2DYcZcZ5-Q",
+  },
   title: {
     default: "PersonaX AI — One AI. A Thousand Minds.",
     template: "%s | PersonaX AI",
@@ -24,6 +27,8 @@ export const metadata: Metadata = {
     title: "PersonaX AI — One AI. A Thousand Minds.",
     description:
       "Talk to AI personas inspired by history, science, technology, creativity and expertise. Create your own AI personas and explore a new way to interact with AI.",
+    url: "https://personax-ai.netlify.app",
+    siteName: "PersonaX AI",
     type: "website",
   },
   twitter: {
