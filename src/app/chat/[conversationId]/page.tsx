@@ -3,9 +3,16 @@
 import Link from "next/link";
 import { ArrowLeft, Copy, RefreshCcw, Send, Sparkles } from "lucide-react";
 import { useParams } from "next/navigation";
-import { useMemo, useState } from "react";
+import { useMemo, useState, useSyncExternalStore } from "react";
+import {
+  customPersonaToPersona,
+  getCustomPersonasSnapshot,
+  parseCustomPersonasSnapshot,
+  subscribeToCustomPersonas,
+} from "@/lib/custom-personas";
 import { getPersonaBySlug } from "@/lib/personas";
 import { PersonaAvatar } from "@/components/persona-avatar";
+import { MessageActions } from "@/components/message-actions";
 
 type ChatMessage = {
   id: string;
@@ -15,10 +22,14 @@ type ChatMessage = {
 
 export default function ChatPage() {
   const params = useParams<{ conversationId: string }>();
-  const persona = useMemo(
-    () => getPersonaBySlug(params?.conversationId ?? "") ?? getPersonaBySlug("albert-einstein"),
-    [params?.conversationId],
+  const conversationId = params?.conversationId ?? "";
+  const staticPersona = useMemo(() => getPersonaBySlug(conversationId), [conversationId]);
+  const customPersonasSnapshot = useSyncExternalStore(subscribeToCustomPersonas, getCustomPersonasSnapshot, () => "__loading__");
+  const customPersona = useMemo(
+    () => parseCustomPersonasSnapshot(customPersonasSnapshot).find((item) => item.id === conversationId),
+    [conversationId, customPersonasSnapshot],
   );
+  const persona = staticPersona ?? (customPersona ? customPersonaToPersona(customPersona) : undefined);
 
   const [messages, setMessages] = useState<ChatMessage[]>([
     {
@@ -31,9 +42,30 @@ export default function ChatPage() {
   const [input, setInput] = useState("");
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState("");
+  const conversationMessages = useMemo(
+    () =>
+      customPersona
+        ? messages.map((message) =>
+            message.id === "welcome" ? { ...message, content: customPersona.greeting } : message,
+          )
+        : messages,
+    [customPersona, messages],
+  );
+
+  if (!staticPersona && customPersonasSnapshot === "__loading__") {
+    return <div className="flex min-h-[60vh] items-center justify-center p-8 text-sm text-slate-300">Loading your persona...</div>;
+  }
 
   if (!persona) {
-    return <div className="p-8 text-white">Persona not found.</div>;
+    return (
+      <main className="mx-auto flex min-h-[60vh] max-w-xl items-center justify-center px-4 py-12 text-center text-white">
+        <div className="rounded-[28px] border border-white/10 bg-slate-950/70 p-8">
+          <h1 className="text-2xl font-bold">Persona not found</h1>
+          <p className="mt-3 text-sm leading-6 text-slate-400">This custom persona may have been removed from this browser.</p>
+          <Link href="/create-persona" className="mt-6 inline-flex rounded-full bg-cyan-500 px-5 py-2.5 text-sm font-semibold text-slate-950">Open Persona Builder</Link>
+        </div>
+      </main>
+    );
   }
 
   const handleSubmit = async (value?: string) => {
@@ -62,14 +94,15 @@ export default function ChatPage() {
           userMessage: trimmed,
           mode: "Casual",
           language: "en",
-          history: messages.map((message) => ({
+          history: conversationMessages.map((message) => ({
             role: message.role,
             content: message.content,
           })),
           memory: [
             "User prefers concise and clear explanations.",
-            `${persona.name} should maintain a grounded, historically informed tone.`,
+            `${persona.name} should maintain a ${persona.tone.toLowerCase()} voice.`,
           ],
+          customPersona: customPersona ?? undefined,
         }),
       });
 
@@ -102,7 +135,7 @@ export default function ChatPage() {
       <header className="rounded-[28px] border border-cyan-400/15 bg-slate-950/75 p-4 shadow-[0_0_30px_rgba(34,211,238,0.08)] backdrop-blur-xl">
         <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
           <div className="flex items-center gap-3">
-            <Link href="/discover" className="rounded-full border border-white/10 bg-white/5 p-2 text-slate-200 transition hover:border-cyan-400/50 hover:text-cyan-200">
+            <Link href={customPersona ? "/create-persona" : "/discover"} className="rounded-full border border-white/10 bg-white/5 p-2 text-slate-200 transition hover:border-cyan-400/50 hover:text-cyan-200">
               <ArrowLeft className="h-4 w-4" />
             </Link>
 
@@ -138,7 +171,7 @@ export default function ChatPage() {
           </div>
 
           <div className="flex-1 space-y-4 overflow-y-auto rounded-[24px] border border-white/5 bg-[radial-gradient(circle_at_top,_rgba(34,211,238,0.08),_transparent_35%),rgba(15,23,42,0.85)] p-4">
-            {messages.map((message) => (
+            {conversationMessages.map((message) => (
               <div
                 key={message.id}
                 className={`max-w-[88%] rounded-2xl border p-4 leading-7 ${
@@ -148,6 +181,7 @@ export default function ChatPage() {
                 }`}
               >
                 {message.content}
+                {message.role === "assistant" && <MessageActions id={`${persona.slug}:${message.id}`} personaName={persona.name} personaSlug={persona.slug} content={message.content} />}
               </div>
             ))}
 

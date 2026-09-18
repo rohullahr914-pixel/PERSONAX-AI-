@@ -3,14 +3,14 @@
 import { useSyncExternalStore, useState } from "react";
 import { Heart, Share2 } from "lucide-react";
 import { getCurrentUser, subscribeToAuth } from "@/lib/auth";
-import { getProfilePreferencesSnapshot, saveProfilePreferences, subscribeToProfile } from "@/lib/profile";
+import { getFavoritePersonaSlugs, getProfilePreferencesSnapshot, subscribeToProfile, toggleFavoritePersona } from "@/lib/profile";
 
 type PersonaActionsProps = {
   slug: string;
   name: string;
 };
 
-type ProfileStore = Record<string, { favoritePersonaSlug?: string }>;
+type ProfileStore = Record<string, { favoritePersonaSlug?: string; favoritePersonaSlugs?: string[] }>;
 
 function readProfileStore(snapshot: string): ProfileStore {
   if (!snapshot) return {};
@@ -26,7 +26,7 @@ export function PersonaActions({ slug, name }: PersonaActionsProps) {
   const user = useSyncExternalStore(subscribeToAuth, getCurrentUser, () => null);
   const profileSnapshot = useSyncExternalStore(subscribeToProfile, getProfilePreferencesSnapshot, () => "");
   const profileStore = readProfileStore(profileSnapshot);
-  const isFavorite = user ? profileStore[user.id]?.favoritePersonaSlug === slug : false;
+  const isFavorite = user ? getFavoritePersonaSlugs(profileStore[user.id] ?? {}).includes(slug) : false;
   const [shareMessage, setShareMessage] = useState("");
 
   const toggleFavorite = () => {
@@ -35,7 +35,7 @@ export function PersonaActions({ slug, name }: PersonaActionsProps) {
       return;
     }
 
-    saveProfilePreferences(user.id, { favoritePersonaSlug: isFavorite ? undefined : slug });
+    toggleFavoritePersona(user.id, slug);
     setShareMessage(isFavorite ? "Removed from favorites." : "Saved to favorites.");
   };
 

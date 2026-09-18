@@ -7,6 +7,7 @@ import { PersonaAvatar } from "@/components/persona-avatar";
 import { BackButton } from "@/components/back-button";
 import { getCurrentUser, subscribeToAuth } from "@/lib/auth";
 import { getProfilePreferences } from "@/lib/profile";
+import { MessageActions } from "@/components/message-actions";
 
 type MultiMessage = {
   id: string;
@@ -257,6 +258,7 @@ export default function MultiPersonaChatPage() {
                   <span className="font-semibold text-cyan-200">{message.speaker}</span>
                 </div>
                 <div className="whitespace-pre-wrap">{message.content}</div>
+                {message.tone === "assistant" && <MessageActions id={`multi:${message.personaSlug ?? "discussion"}:${message.id}`} personaName={message.speaker} personaSlug={message.personaSlug} content={message.content} />}
               </div>
             ))}
 

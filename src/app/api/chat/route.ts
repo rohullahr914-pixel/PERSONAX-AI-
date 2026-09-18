@@ -1,5 +1,6 @@
 import { NextResponse } from "next/server";
 import { generatePersonaResponse } from "@/lib/ai/persona-engine";
+import { parseCustomPersona } from "@/lib/custom-personas";
 import type { PersonaMode } from "@/lib/types";
 
 const personaModes: PersonaMode[] = ["Casual", "Expert", "Tutor", "Mentor", "Debate", "Interview", "Research", "Creative"];
@@ -19,10 +20,16 @@ export async function POST(request: Request) {
       history?: Array<{ role: "user" | "assistant"; content: string }>;
       memory?: string[];
       researchMode?: boolean;
+      customPersona?: unknown;
     };
 
     if (!body.userMessage || !body.userMessage.trim()) {
       return NextResponse.json({ error: "A valid message is required." }, { status: 400 });
+    }
+
+    const customPersona = body.customPersona ? parseCustomPersona(body.customPersona) ?? undefined : undefined;
+    if (body.customPersona && !customPersona) {
+      return NextResponse.json({ error: "The custom persona is incomplete or invalid." }, { status: 400 });
     }
 
     const response = await generatePersonaResponse({
@@ -34,6 +41,7 @@ export async function POST(request: Request) {
       history: body.history,
       memory: body.memory,
       researchMode: body.researchMode,
+      customPersona,
     });
 
     if (!response.ok) {

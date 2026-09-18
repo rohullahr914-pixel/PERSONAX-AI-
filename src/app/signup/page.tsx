@@ -18,7 +18,7 @@ export default function SignupPage() {
     setIsSubmitting(true);
     setError("");
 
-    const result = signupUser(form);
+    const result = await signupUser(form);
 
     if (!result.ok) {
       setError(result.error);
@@ -26,7 +26,8 @@ export default function SignupPage() {
       return;
     }
 
-    router.push("/discover");
+    router.push("/profile");
+    router.refresh();
   };
 
   return (

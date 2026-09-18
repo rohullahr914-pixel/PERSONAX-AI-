@@ -1,5 +1,6 @@
 import { callGroq } from "@/lib/ai/groq";
 import { buildPromptMessages } from "@/lib/ai/prompt-engine/builder";
+import { customPersonaToPersona, type CustomPersona } from "@/lib/custom-personas";
 import { getPersonaBySlug } from "@/lib/personas";
 import type { PersonaMode } from "@/lib/types";
 
@@ -12,14 +13,17 @@ export type PersonaEngineRequest = {
   language?: string;
   memory?: string[];
   researchMode?: boolean;
+  customPersona?: CustomPersona;
 };
 
 export async function generatePersonaResponse(request: PersonaEngineRequest) {
-  const persona = request.personaId
-    ? getPersonaBySlug(request.personaId)
-    : request.personaSlug
-      ? getPersonaBySlug(request.personaSlug)
-      : undefined;
+  const persona = request.customPersona
+    ? customPersonaToPersona(request.customPersona)
+    : request.personaId
+      ? getPersonaBySlug(request.personaId)
+      : request.personaSlug
+        ? getPersonaBySlug(request.personaSlug)
+        : undefined;
 
   if (!persona) {
     return { ok: false, error: "Invalid persona. Please select a valid persona to continue." };

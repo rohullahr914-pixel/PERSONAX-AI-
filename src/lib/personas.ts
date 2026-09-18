@@ -1,4 +1,5 @@
 import type { Persona } from "@/lib/types";
+import { historicalPersonas } from "@/lib/historical-personas";
 
 const profileSeed = [
   {
@@ -797,6 +798,7 @@ const profileSeed = [
     disclaimer: "AI simulation inspired by publicly available historical records and works — not the actual person.",
     color: "#a78bfa",
   },
+  ...historicalPersonas,
 ] as const satisfies Omit<Persona, "id" | "createdAt" | "updatedAt">[];
 
 export const personas: Persona[] = profileSeed.map((persona, index) => ({

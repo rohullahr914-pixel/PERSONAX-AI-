@@ -1,0 +1,30 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256" role="img" aria-labelledby="title desc">
+  <title id="title">PersonaX AI</title>
+  <desc id="desc">Four perspectives unified around an X</desc>
+  <defs>
+    <linearGradient id="bg" x1="24" y1="20" x2="232" y2="236" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#071A36"/>
+      <stop offset="1" stop-color="#060A20"/>
+    </linearGradient>
+    <linearGradient id="brand" x1="44" y1="40" x2="218" y2="220" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#20E2FF"/>
+      <stop offset="0.48" stop-color="#2784FF"/>
+      <stop offset="1" stop-color="#7C4DFF"/>
+    </linearGradient>
+    <filter id="glow" x="-30%" y="-30%" width="160%" height="160%">
+      <feGaussianBlur stdDeviation="6" result="blur"/>
+      <feColorMatrix in="blur" values="0 0 0 0 0.08 0 0 0 0 0.65 0 0 0 0 1 0 0 0 .3 0"/>
+      <feMerge><feMergeNode/><feMergeNode in="SourceGraphic"/></feMerge>
+    </filter>
+  </defs>
+  <rect x="8" y="8" width="240" height="240" rx="58" fill="url(#bg)" stroke="#41DFFF" stroke-opacity=".2" stroke-width="2"/>
+  <g fill="url(#brand)" filter="url(#glow)">
+    <path d="M121 35C82 38 52 65 44 101c-2 9 7 16 15 12l26-13c12-6 20-18 20-31V55c7-4 13-9 19-15 2-2 1-5-3-5Z"/>
+    <path d="M221 121c-4-39-31-69-67-77-9-2-16 7-12 15l13 26c6 12 18 20 31 20h14c4 7 9 13 15 19 2 2 5 1 5-3Z"/>
+    <path d="M135 221c39-4 69-31 77-67 2-9-7-16-15-12l-26 13c-12 6-20 18-20 31v14c-7 4-13 9-19 15-2 2-1 5 3 5Z"/>
+    <path d="M35 135c4 39 31 69 67 77 9 2 16-7 12-15l-13-26c-6-12-18-20-31-20H56c-4-7-9-13-15-19-2-2-5-1-5 3Z"/>
+  </g>
+  <path d="m91 91 74 74M165 91l-74 74" stroke="#071027" stroke-width="22" stroke-linecap="round"/>
+  <path d="m99 99 58 58M157 99l-58 58" stroke="#EAFBFF" stroke-opacity=".92" stroke-width="4" stroke-linecap="round"/>
+  <circle cx="128" cy="128" r="5" fill="#fff"/>
+</svg>
