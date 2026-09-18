@@ -1,0 +1,145 @@
+[
+  {
+    "id": "a286ba53-5266-4238-be44-9aa08e734319",
+    "eventType": "page_view",
+    "path": "/admin",
+    "country": "Unknown",
+    "device": "Desktop",
+    "browser": "Chrome",
+    "referrer": "http://localhost:3000/admin",
+    "visitorId": "::1",
+    "createdAt": "2026-09-18T13:15:41.508Z"
+  },
+  {
+    "id": "ed4752fc-c555-4860-b8d9-94ed8d4c1630",
+    "eventType": "page_view",
+    "path": "/discover",
+    "country": "Unknown",
+    "device": "Desktop",
+    "browser": "Chrome",
+    "referrer": "http://localhost:3000/admin",
+    "visitorId": "::1",
+    "createdAt": "2026-09-18T13:19:35.856Z"
+  },
+  {
+    "id": "65d5b687-090f-401e-9f2e-4b16bdd354ca",
+    "eventType": "page_view",
+    "path": "/discover",
+    "country": "Unknown",
+    "device": "Desktop",
+    "browser": "Chrome",
+    "referrer": "http://localhost:3000/admin",
+    "visitorId": "::1",
+    "createdAt": "2026-09-18T13:25:39.068Z"
+  },
+  {
+    "id": "36350cb9-fe4b-4d17-b1ce-92a0bf7bd089",
+    "eventType": "page_view",
+    "path": "/",
+    "country": "Unknown",
+    "device": "Desktop",
+    "browser": "Chrome",
+    "referrer": "http://localhost:3000/admin",
+    "visitorId": "::1",
+    "createdAt": "2026-09-18T13:25:44.513Z"
+  },
+  {
+    "id": "e637626e-538e-44c3-800e-47154cac3cc9",
+    "eventType": "page_view",
+    "path": "/discover",
+    "country": "Unknown",
+    "device": "Desktop",
+    "browser": "Chrome",
+    "referrer": "http://localhost:3000/admin",
+    "visitorId": "::1",
+    "createdAt": "2026-09-18T13:25:54.509Z"
+  },
+  {
+    "id": "f6b2a4f4-dd63-4b52-8ef2-8c3fb95abb48",
+    "eventType": "page_view",
+    "path": "/persona/nexus",
+    "country": "Unknown",
+    "device": "Desktop",
+    "browser": "Chrome",
+    "referrer": "http://localhost:3000/admin",
+    "visitorId": "::1",
+    "createdAt": "2026-09-18T13:26:03.567Z"
+  },
+  {
+    "id": "60bf59d1-45c7-41bc-ab03-6b57c6f14b4f",
+    "eventType": "page_view",
+    "path": "/chat/nexus",
+    "country": "Unknown",
+    "device": "Desktop",
+    "browser": "Chrome",
+    "referrer": "http://localhost:3000/admin",
+    "visitorId": "::1",
+    "createdAt": "2026-09-18T13:26:13.640Z"
+  },
+  {
+    "id": "694d11d5-7d8c-4e04-891c-1fee0cbcb3f3",
+    "eventType": "page_view",
+    "path": "/discover",
+    "country": "Unknown",
+    "device": "Desktop",
+    "browser": "Chrome",
+    "referrer": "http://localhost:3000/admin",
+    "visitorId": "::1",
+    "createdAt": "2026-09-18T13:26:23.188Z"
+  },
+  {
+    "id": "42dece21-a5a7-4c02-ba45-393024261dc6",
+    "eventType": "page_view",
+    "path": "/",
+    "country": "Unknown",
+    "device": "Desktop",
+    "browser": "Chrome",
+    "referrer": "http://localhost:3000/admin",
+    "visitorId": "::1",
+    "createdAt": "2026-09-18T13:28:41.599Z"
+  },
+  {
+    "id": "f4798632-5d3d-4a09-9254-1bd6197d7af9",
+    "eventType": "page_view",
+    "path": "/discover",
+    "country": "Unknown",
+    "device": "Desktop",
+    "browser": "Chrome",
+    "referrer": "http://localhost:3000/admin",
+    "visitorId": "::1",
+    "createdAt": "2026-09-18T13:32:05.562Z"
+  },
+  {
+    "id": "20443b6b-aead-4f81-a401-183d361f3c01",
+    "eventType": "page_view",
+    "path": "/",
+    "country": "Unknown",
+    "device": "Desktop",
+    "browser": "Chrome",
+    "referrer": "http://localhost:3000/admin",
+    "visitorId": "::1",
+    "createdAt": "2026-09-18T13:32:47.520Z"
+  },
+  {
+    "id": "3da010e2-55a7-4df4-a657-22d55ff5e0ae",
+    "eventType": "page_view",
+    "path": "/persona/nexus",
+    "country": "Unknown",
+    "device": "Desktop",
+    "browser": "Chrome",
+    "referrer": "http://localhost:3000/admin",
+    "visitorId": "::1",
+    "createdAt": "2026-09-18T13:35:17.182Z"
+  },
+  {
+    "id": "0e46bef7-01fe-43c6-87b0-4485651b5b79",
+    "eventType": "page_view",
+    "path": "/",
+    "country": "Unknown",
+    "device": "Desktop",
+    "browser": "Chrome",
+    "referrer": "http://localhost:3000/admin",
+    "visitorId": "::1",
+    "createdAt": "2026-09-18T13:35:21.391Z"
+  }
+]

@@ -21,6 +21,7 @@ export async function POST(request: Request) {
       memory?: string[];
       researchMode?: boolean;
       customPersona?: unknown;
+      selectedExpertise?: string;
     };
 
     if (!body.userMessage || !body.userMessage.trim()) {
@@ -42,6 +43,7 @@ export async function POST(request: Request) {
       memory: body.memory,
       researchMode: body.researchMode,
       customPersona,
+      selectedExpertise: body.selectedExpertise,
     });
 
     if (!response.ok) {

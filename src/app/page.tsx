@@ -16,10 +16,10 @@ import { personas } from "@/lib/personas";
 const spotlightSlugs = [
   "albert-einstein",
   "michael-jackson",
-  "cristiano-ronaldo",
+  "nexus",
   "leonardo-da-vinci",
   "fyodor-dostoevsky",
-  "elon-musk",
+  "john-d-rockefeller",
 ];
 
 const spotlightPersonas = spotlightSlugs.map((slug) => personas.find((persona) => persona.slug === slug)!);

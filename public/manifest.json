@@ -1,0 +1,13 @@
+{
+  "name": "PersonaX AI",
+  "short_name": "PersonaX",
+  "description": "One AI. A Thousand Minds.",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#020817",
+  "theme_color": "#020817",
+  "orientation": "portrait-primary",
+  "icons": [
+    { "src": "/brand/personax-mark-v2.svg", "sizes": "any", "type": "image/svg+xml", "purpose": "any maskable" }
+  ]
+}

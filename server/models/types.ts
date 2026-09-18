@@ -43,6 +43,7 @@ export type CustomPersona = { id: string; userId: string; name: string; professi
 export type MultiPersonaSession = { id: string; userId: string; title: string; personaIds: string[]; createdAt: string; updatedAt: string };
 export type ResearchSession = { id: string; userId: string; query: string; status: "pending" | "completed" | "failed"; createdAt: string; updatedAt: string };
 export type Setting = { id: string; userId: string; key: string; value: string; isSecret: boolean; createdAt: string; updatedAt: string };
+export type AnalyticsEvent = { id: string; eventType: "page_view" | "login" | "signup"; path: string; country: string; device: string; browser: string; referrer?: string; visitorId: string; createdAt: string };
 
 export type EntityMap = {
   users: User;
@@ -57,4 +58,5 @@ export type EntityMap = {
   multiPersonaSessions: MultiPersonaSession;
   researchSessions: ResearchSession;
   settings: Setting;
+  analyticsEvents: AnalyticsEvent;
 };

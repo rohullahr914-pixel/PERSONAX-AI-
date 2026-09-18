@@ -14,6 +14,7 @@ export type PersonaEngineRequest = {
   memory?: string[];
   researchMode?: boolean;
   customPersona?: CustomPersona;
+  selectedExpertise?: string;
 };
 
 export async function generatePersonaResponse(request: PersonaEngineRequest) {
@@ -37,6 +38,7 @@ export async function generatePersonaResponse(request: PersonaEngineRequest) {
     history: request.history,
     memory: request.memory,
     researchMode: request.researchMode,
+    selectedExpertise: request.selectedExpertise,
   });
 
   const result = await callGroq(messages);

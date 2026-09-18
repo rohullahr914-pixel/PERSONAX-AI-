@@ -58,6 +58,10 @@ async function PersonaProfileContent({ params }: { params: Promise<{ slug: strin
                 <p className="mt-3 text-slate-200">{persona.description}</p>
               </section>
 
+              {persona.slug === "john-d-rockefeller" && (
+                <p className="rounded-[20px] border border-amber-300/25 bg-amber-400/10 p-4 text-sm leading-6 text-amber-100">AI historical simulation. Not affiliated with or endorsed by any Rockefeller organization or family member.</p>
+              )}
+
               <section className="rounded-[24px] border border-white/10 bg-white/3 p-5">
                 <p className="text-sm uppercase tracking-[0.25em] text-cyan-300">Biography</p>
                 <p className="mt-3 leading-7 text-slate-300">{persona.biography}</p>

@@ -5,6 +5,9 @@ import { Sparkles } from "lucide-react";
 import { MobileNav } from "@/components/mobile-nav";
 import { AuthActions } from "@/components/auth-actions";
 import { AccountBootstrap } from "@/components/account-bootstrap";
+import { AnalyticsTracker } from "@/components/analytics-tracker";
+import { InstallPrompt } from "@/components/install-prompt";
+import { ServiceWorkerRegistration } from "@/components/service-worker-registration";
 import "./globals.css";
 
 const navItems = [
@@ -25,6 +28,7 @@ export const metadata: Metadata = {
   },
   description:
     "Talk to AI personas inspired by history, science, technology, creativity and expertise. Create your own AI personas and explore a new way to interact with AI.",
+  manifest: "/manifest.json",
   openGraph: {
     title: "PersonaX AI — One AI. A Thousand Minds.",
     description:
@@ -46,6 +50,9 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
     <html lang="en">
       <body>
         <AccountBootstrap />
+        <AnalyticsTracker />
+        <InstallPrompt />
+        <ServiceWorkerRegistration />
         <div className="min-h-screen bg-[#020817] text-white">
           <div className="mx-auto max-w-[1500px] px-3 pb-8 pt-3 sm:px-6 sm:pt-5 lg:px-8">
             <header className="sticky top-3 z-50 mb-6 rounded-[24px] border border-cyan-300/20 bg-slate-950/88 px-3 py-3 shadow-[0_12px_45px_rgba(2,8,23,0.48)] backdrop-blur-2xl sm:top-5 sm:mb-8 sm:rounded-[28px] sm:px-5 lg:px-7">

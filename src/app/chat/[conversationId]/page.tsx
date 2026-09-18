@@ -20,6 +20,8 @@ type ChatMessage = {
   content: string;
 };
 
+const nexusExpertises = ["Software Engineering", "Artificial Intelligence", "Medicine & Health", "Law", "Business & Entrepreneurship", "Finance & Investing", "Psychology", "Science", "Engineering", "Education & Research"] as const;
+
 export default function ChatPage() {
   const params = useParams<{ conversationId: string }>();
   const conversationId = params?.conversationId ?? "";
@@ -42,6 +44,8 @@ export default function ChatPage() {
   const [input, setInput] = useState("");
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState("");
+  const [selectedExpertise, setSelectedExpertise] = useState<string | null>(null);
+  const [showExpertiseChooser, setShowExpertiseChooser] = useState(true);
   const conversationMessages = useMemo(
     () =>
       customPersona
@@ -64,6 +68,24 @@ export default function ChatPage() {
           <p className="mt-3 text-sm leading-6 text-slate-400">This custom persona may have been removed from this browser.</p>
           <Link href="/create-persona" className="mt-6 inline-flex rounded-full bg-cyan-500 px-5 py-2.5 text-sm font-semibold text-slate-950">Open Persona Builder</Link>
         </div>
+      </main>
+    );
+  }
+
+  if (persona.slug === "nexus" && (!selectedExpertise || showExpertiseChooser)) {
+    return (
+      <main className="mx-auto flex min-h-screen max-w-5xl items-center px-4 py-10 text-white sm:px-6 lg:px-8">
+        <section className="w-full rounded-[32px] border border-cyan-300/20 bg-slate-950/75 p-6 shadow-[0_24px_90px_rgba(2,8,23,0.55)] sm:p-10">
+          <div className="mx-auto max-w-3xl text-center">
+            <PersonaAvatar slug="nexus" name="NEXUS" className="mx-auto h-24 w-24 border-2 border-cyan-300/40 shadow-[0_0_35px_rgba(34,211,238,0.3)]" />
+            <p className="mt-7 text-xs font-bold uppercase tracking-[0.28em] text-cyan-300">NEXUS · One Mind. Ten Expertises.</p>
+            <h1 className="mt-4 text-4xl font-black tracking-[-0.07em] sm:text-6xl">Choose Your Expertise</h1>
+            <p className="mx-auto mt-4 max-w-xl text-sm leading-7 text-slate-400">Select one focus for this conversation. NEXUS will keep every answer centered on your choice.</p>
+          </div>
+          <div className="mx-auto mt-9 grid max-w-4xl gap-3 sm:grid-cols-2 lg:grid-cols-3">
+            {nexusExpertises.map((expertise) => <button key={expertise} type="button" onClick={() => { setSelectedExpertise(expertise); setShowExpertiseChooser(false); }} className="rounded-2xl border border-white/10 bg-white/[0.035] px-4 py-4 text-left text-sm font-semibold text-slate-100 transition hover:-translate-y-0.5 hover:border-cyan-300/45 hover:bg-cyan-400/10">{expertise}</button>)}
+          </div>
+        </section>
       </main>
     );
   }
@@ -102,6 +124,7 @@ export default function ChatPage() {
             "User prefers concise and clear explanations.",
             `${persona.name} should maintain a ${persona.tone.toLowerCase()} voice.`,
           ],
+          selectedExpertise: persona.slug === "nexus" ? selectedExpertise : undefined,
           customPersona: customPersona ?? undefined,
         }),
       });
@@ -142,12 +165,13 @@ export default function ChatPage() {
             <PersonaAvatar slug={persona.slug} name={persona.name} className="h-12 w-12 border border-cyan-300/30 shadow-[0_0_18px_rgba(34,211,238,0.25)]" />
 
             <div>
-              <h1 className="text-xl font-bold tracking-[-0.05em] text-white">{persona.name}</h1>
-              <p className="text-[10px] uppercase tracking-[0.2em] text-slate-400">{persona.profession}</p>
+              <h1 className="text-xl font-bold tracking-[-0.05em] text-white">{persona.name}{persona.slug === "nexus" && selectedExpertise ? ` · ${selectedExpertise}` : ""}</h1>
+              <p className="text-[10px] uppercase tracking-[0.2em] text-slate-400">{persona.slug === "nexus" ? "Selected expertise" : persona.profession}</p>
             </div>
           </div>
 
           <div className="flex items-center gap-2 self-start sm:self-auto">
+            {persona.slug === "nexus" && <button type="button" onClick={() => setShowExpertiseChooser(true)} className="rounded-full border border-cyan-300/25 bg-cyan-400/10 px-3 py-2 text-sm text-cyan-100 transition hover:border-cyan-300/50">Change Expertise</button>}
             <button type="button" className="rounded-full border border-white/10 bg-white/5 px-3 py-2 text-sm text-slate-200 transition hover:border-cyan-400/40 hover:text-cyan-200">
               Regenerate
             </button>
@@ -163,7 +187,7 @@ export default function ChatPage() {
           <div className="mb-4 flex items-center justify-between border-b border-white/10 pb-4">
             <div>
               <p className="text-[10px] uppercase tracking-[0.22em] text-cyan-300">Conversation</p>
-              <h2 className="mt-1 text-2xl font-bold tracking-[-0.06em] text-white">{persona.name} • Casual</h2>
+              <h2 className="mt-1 text-2xl font-bold tracking-[-0.06em] text-white">{persona.name}{persona.slug === "nexus" && selectedExpertise ? ` · ${selectedExpertise}` : ""} • Casual</h2>
             </div>
             <div className="rounded-full border border-cyan-400/30 bg-cyan-500/10 px-3 py-1.5 text-[10px] font-medium uppercase tracking-[0.18em] text-cyan-200">
               {isLoading ? "Thinking..." : "Live"}

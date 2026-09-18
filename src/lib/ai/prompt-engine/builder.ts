@@ -15,6 +15,7 @@ export type PromptContext = {
   researchMode?: boolean;
   multiPersona?: boolean;
   participantNames?: string[];
+  selectedExpertise?: string;
 };
 
 export function buildPersonaSystemPrompt(context: PromptContext) {
@@ -32,6 +33,7 @@ export function buildPersonaSystemPrompt(context: PromptContext) {
     memoryPrompt,
     researchPrompt,
     languagePrompt,
+    context.selectedExpertise ? `For NEXUS, focus exclusively on the selected expertise: ${context.selectedExpertise}. Keep examples, recommendations, and depth centered on this expertise unless the user explicitly changes it.` : "",
     context.multiPersona && context.participantNames?.length
       ? `You are speaking in a multi-persona discussion with ${context.participantNames.join(", ")}. Maintain your distinct identity, perspective, and tone.`
       : "",

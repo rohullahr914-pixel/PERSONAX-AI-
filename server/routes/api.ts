@@ -16,3 +16,6 @@ apiRouter.post("/messages", asyncHandler(controller.createMessage));
 apiRouter.post("/memories", asyncHandler(controller.createMemory));
 apiRouter.post("/favorites", asyncHandler(controller.createFavorite));
 apiRouter.delete("/favorites/:id", asyncHandler(controller.deleteFavorite));
+apiRouter.post("/admin/login", asyncHandler(controller.adminLogin));
+apiRouter.post("/admin/events", asyncHandler(controller.adminEvent));
+apiRouter.get("/admin/analytics", asyncHandler(controller.adminAnalytics));

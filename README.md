@@ -5,8 +5,9 @@ PersonaX is a Next.js application backed by PostgreSQL for accounts, secure sess
 ## Local setup
 
 1. Copy `.env.example` to `.env` and set a real `DATABASE_URL`.
-2. Create the empty PostgreSQL database named in the connection URL.
-3. Install dependencies and apply the schema:
+2. Set `ADMIN_EMAIL` to the email that should access `/admin`.
+3. Create the empty PostgreSQL database named in the connection URL.
+4. Install dependencies and apply the schema:
 
 ```bash
 npm install
@@ -18,6 +19,8 @@ npm run db:migrate
 ```bash
 npm run dev -- -p 3000
 ```
+
+The admin dashboard is available at `/admin` after logging in with the account whose email matches `ADMIN_EMAIL`. It reports page views, countries, devices, browsers, and popular paths from the analytics events table.
 
 ## Database
 
